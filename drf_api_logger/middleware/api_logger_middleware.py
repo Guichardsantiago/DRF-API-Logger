@@ -91,8 +91,10 @@ class APILoggerMiddleware:
             if len(self.DRF_API_LOGGER_METHODS) > 0 and method not in self.DRF_API_LOGGER_METHODS:
                 return self.get_response(request)
 
-            if response.get('content-type') in ('application/json', 'application/vnd.api+json',):
-                if getattr(response, 'streaming', False):
+            if response.get('content-type') in ('application/json', 'application/vnd.api+json', 'text/csv', 'text/csv; charset=utf-8'):
+                if response.get('content-type') in ('text/csv', 'text/csv; charset=utf-8'):
+                    response_body = '** CSV File **'
+                elif getattr(response, 'streaming', False):
                     response_body = '** Streaming **'
                 else:
                     if type(response.content) == bytes:
