@@ -121,7 +121,8 @@ class APILoggerMiddleware:
                     execution_time=time.time() - start_time,
                     added_on=timezone.now(),
                     user=request.user if (request.user and request.user.is_authenticated) else None,
-                    response_size=get_size(response.content)
+                    response_size=get_size(response.content),
+                    response_headers=response.headers
                 )
                 if self.DRF_API_LOGGER_DATABASE:
                     if LOGGER_THREAD:

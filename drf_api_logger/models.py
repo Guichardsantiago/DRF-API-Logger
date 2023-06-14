@@ -32,7 +32,8 @@ if database_log_enabled():
                                              help_text='Server execution time (Not complete response time.)')
         user = models.ForeignKey('auth.user', related_name = 'request_user', on_delete = models.SET_NULL, null = True)
         response_size = models.DecimalField(max_digits=16, decimal_places=2, blank=True, null=True)
-        
+        response_headers = models.TextField()
+
         def __str__(self):
             return self.api
 
