@@ -121,15 +121,16 @@ class APILoggerMiddleware:
                     execution_time=time.time() - start_time,
                     added_on=timezone.now(),
                     user=request.user if (request.user and request.user.is_authenticated) else None,
-                    response_size=get_size(response.content)
+                    response_size=get_size(response.content),
+                    response_headers=response.headers
                 )
                 if self.DRF_API_LOGGER_DATABASE:
                     if LOGGER_THREAD:
                         d = data.copy()
-                        d['headers'] = json.dumps(d['headers'], indent=4)
+                        d['headers'] = json.dumps(d['headers'], separators=(',', ':'), ensure_ascii=False)
                         if request_data:
-                            d['body'] = json.dumps(d['body'], indent=4)
-                        d['response'] = json.dumps(d['response'], indent=4)
+                            d['body'] = json.dumps(d['body'], separators=(',', ':'), ensure_ascii=False)
+                        d['response'] = json.dumps(d['response'], separators=(',', ':'), ensure_ascii=False)
                         LOGGER_THREAD.put_log_data(data=d)
                 if self.DRF_API_LOGGER_SIGNAL:
                     API_LOGGER_SIGNAL.listen(**data)
