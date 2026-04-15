@@ -127,10 +127,10 @@ class APILoggerMiddleware:
                 if self.DRF_API_LOGGER_DATABASE:
                     if LOGGER_THREAD:
                         d = data.copy()
-                        d['headers'] = json.dumps(d['headers'], indent=4)
+                        d['headers'] = json.dumps(d['headers'], separators=(',', ':'), ensure_ascii=False)
                         if request_data:
-                            d['body'] = json.dumps(d['body'], indent=4)
-                        d['response'] = json.dumps(d['response'], indent=4)
+                            d['body'] = json.dumps(d['body'], separators=(',', ':'), ensure_ascii=False)
+                        d['response'] = json.dumps(d['response'], separators=(',', ':'), ensure_ascii=False)
                         LOGGER_THREAD.put_log_data(data=d)
                 if self.DRF_API_LOGGER_SIGNAL:
                     API_LOGGER_SIGNAL.listen(**data)
